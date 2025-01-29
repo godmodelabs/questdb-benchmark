@@ -1,0 +1,31 @@
+services:
+  questdb-benchmark:
+    container_name: questdb-benchmark
+    build:
+      context: ./docker/questdb
+    restart: always
+    ports:
+      - "9000:9000"
+    #volumes:
+    #- ./questdb/data:/var/lib/questdb
+    ## Additional variables can be found here: https://questdb.io/docs/reference/configuration
+    healthcheck:
+      test: "/var/lib/questdb/healthcheck.sh"
+      interval: 2s
+      retries: 30
+    networks:
+      - backend
+
+  questdb-benchmark-client:
+    container_name: questdb-benchmark-client
+    build:
+      context: ./docker/benchmark
+    depends_on:
+      questdb-benchmark:
+        condition: service_healthy
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: "bridge"
