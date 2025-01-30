@@ -90,7 +90,7 @@ func main() {
 	}
 	defer qdbClient.Close(ctx)
 
-	g := NewGenerator(20000000, 200000, 300000, time.Now(), time.Hour*72)
+	g := NewGenerator(20000000, 5000, 50000, time.Now(), time.Hour)
 	g.Start()
 
 	statsTicker := *time.NewTicker(1 * time.Second)
@@ -125,12 +125,14 @@ func main() {
 				fmt.Printf("error decoding query json%v\n", err)
 				os.Exit(1)
 			}
-			count := w.Dataset[0][0].(float64)
+			count := int(w.Dataset[0][0].(float64))
 
 			generatedTicks := g.GeneratedTicks()
 			ticksPerSec := generatedTicks - prevTicks
+			tickDelta := generatedTicks - count
 			prevTicks = generatedTicks
-			fmt.Printf("generatedTicks %v - ticks/second %v - questdb count %v - writerTxn %v readerTxn %v delta %v\n", generatedTicks, ticksPerSec, count, writerTxn, sequencerTxn, sequencerTxn-writerTxn)
+			fmt.Printf("generatedTicks %v - ticks/second %v - questdb count %v - writerTxn %v readerTxn %v w/r delta %v ticksDelta %v\n",
+				generatedTicks, ticksPerSec, count, writerTxn, sequencerTxn, sequencerTxn-writerTxn, tickDelta)
 		}
 	}()
 
