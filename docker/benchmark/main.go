@@ -15,9 +15,8 @@ import (
 	qdb "github.com/questdb/go-questdb-client/v3"
 )
 
-// const QUESTDB_API_URL = "http://questdb-benchmark:9000/exec"
-const QUESTDB_API_URL = "http://localhost:9000/exec"
-const QUESTDB_HOST = "localhost:9000"
+const QUESTDB_API_URL = "http://questdb-benchmark:9000/exec"
+const QUESTDB_HOST = "questdb-benchmark:9000"
 const TABLE_NAME = "benchmark"
 
 type QueryResponse struct {
@@ -90,7 +89,8 @@ func main() {
 	}
 	defer qdbClient.Close(ctx)
 
-	g := NewGenerator(20000000, 5000, 50000, time.Now(), time.Hour)
+	// 40 mil ticks in total, 2.5 mil symbols, 100k updates per second
+	g := NewGenerator(40000000, 2500000, 100000, time.Now(), 0)
 	g.Start()
 
 	statsTicker := *time.NewTicker(1 * time.Second)

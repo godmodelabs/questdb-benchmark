@@ -6,9 +6,6 @@ services:
     restart: always
     ports:
       - "9000:9000"
-    #volumes:
-    #- ./questdb/data:/var/lib/questdb
-    ## Additional variables can be found here: https://questdb.io/docs/reference/configuration
     healthcheck:
       test: "/var/lib/questdb/healthcheck.sh"
       interval: 2s

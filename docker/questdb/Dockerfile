@@ -6,7 +6,7 @@ ENV TZ=Europe/Berlin
 ENV APP_ENV=production
 
 ## Additional variables can be found here: https://questdb.io/docs/reference/configuration
-ENV QDB_DEBUG=false
+ENV QDB_DEBUG=true
 ENV QDB_LOG_W_STDOUT_LEVEL=ERROR
 ENV QDB_LOG_W_FILE_LEVEL=ERROR
 ENV QDB_LOG_W_HTTP_MIN_LEVEL=ERROR
